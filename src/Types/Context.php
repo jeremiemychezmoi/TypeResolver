@@ -34,6 +34,9 @@ final class Context
     /** @var array List of namespace aliases => Fully Qualified Namespace. */
     private $namespaceAliases;
 
+    /** @var string Name of the structural element, within the namespace. */
+    protected $lsen = '';
+
     /**
      * Initializes the new context and normalizes all passed namespaces to be in Qualified Namespace Name (QNN)
      * format (without a preceding `\`).
@@ -59,6 +62,7 @@ final class Context
         }
 
         $this->namespaceAliases = $namespaceAliases;
+        $this->setLSEN('');
     }
 
     /**
@@ -81,7 +85,17 @@ final class Context
     {
         return $this->namespaceAliases;
     }
-    
+
+    /**
+     * Returns the Local Structural Element Name.
+     *
+     * @return string Name of the structural element, within the namespace.
+     */
+    public function getLSEN()
+    {
+        return $this->lsen;
+    }
+
     /**
      * Sets a new namespace.
      * 
@@ -139,5 +153,21 @@ final class Context
         $this->namespace_aliases[$alias] = '\\' . trim((string)$fqnn, '\\');
         return $this;
     }
-    
+
+    /**
+     * Sets a new Local Structural Element Name.
+     *
+     * Sets a new Local Structural Element Name. A local name also contains
+     * punctuation determining the kind of structural element (e.g. trailing "("
+     * and ")" for functions and methods).
+     *
+     * @param string $lsen The new local name of a structural element.
+     *
+     * @return $this
+     */
+    public function setLSEN($lsen)
+    {
+        $this->lsen = (string)$lsen;
+        return $this;
+    }
 }
