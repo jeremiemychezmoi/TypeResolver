@@ -81,4 +81,63 @@ final class Context
     {
         return $this->namespaceAliases;
     }
+    
+    /**
+     * Sets a new namespace.
+     * 
+     * Sets a new namespace for the context. Leading and trailing slashes are
+     * trimmed, and the keywords "global" and "default" are treated as aliases
+     * to no namespace.
+     * 
+     * @param string $namespace The new namespace to set.
+     * 
+     * @return $this
+     */
+    public function setNamespace($namespace)
+    {
+        if ('global' !== $namespace
+            && 'default' !== $namespace
+        ) {
+            // Srip leading and trailing slash
+            $this->namespace = trim((string)$namespace, '\\');
+        } else {
+            $this->namespace = '';
+        }
+        return $this;
+    }
+    
+    /**
+     * Sets the namespace aliases, replacing all previous ones.
+     * 
+     * @param array $namespace_aliases List of namespace aliases => Fully
+     *     Qualified Namespace.
+     * 
+     * @return $this
+     */
+    public function setNamespaceAliases(array $namespace_aliases)
+    {
+        $this->namespace_aliases = array();
+        foreach ($namespace_aliases as $alias => $fqnn) {
+            $this->setNamespaceAlias($alias, $fqnn);
+        }
+        return $this;
+    }
+    
+    /**
+     * Adds a namespace alias to the context.
+     * 
+     * @param string $alias The alias name (the part after "as", or the last
+     *     part of the Fully Qualified Namespace Name) to add.
+     * @param string $fqnn  The Fully Qualified Namespace Name for this alias.
+     *     Any form of leading/trailing slashes are accepted, but what will be
+     *     stored is a name, prefixed with a slash, and no trailing slash.
+     * 
+     * @return $this
+     */
+    public function setNamespaceAlias($alias, $fqnn)
+    {
+        $this->namespace_aliases[$alias] = '\\' . trim((string)$fqnn, '\\');
+        return $this;
+    }
+    
 }
