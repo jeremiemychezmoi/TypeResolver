@@ -44,7 +44,7 @@ final class Context
      * @param string $namespace The namespace where this DocBlock resides in.
      * @param array $namespaceAliases List of namespace aliases => Fully Qualified Namespace.
      */
-    public function __construct($namespace, array $namespaceAliases = [])
+    public function __construct($namespace = '', array $namespaceAliases = [])
     {
         $this->namespace = ('global' !== $namespace && 'default' !== $namespace)
             ? trim((string)$namespace, '\\')
